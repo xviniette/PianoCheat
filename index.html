@@ -1,0 +1,105 @@
+<html>
+    <head>
+        <title>Aide Piano</title>
+    </head>
+    <body>
+        <div id="app">
+            <img src="./circle.png" height="500px" />
+            <div>
+                <button
+                    v-for="(key, index) in keyboard"
+                    @click="selected = index"
+                >
+                    {{getKey(index)}}
+                </button>
+            </div>
+
+            <h2>Majeur</h2>
+            <ul>
+                <li v-for="(notes, note) in getMajorHarmony(selected)">
+                    {{getKey(note)}} :
+                    <span v-for="n in notes">{{getKey(n)}} </span>
+                </li>
+            </ul>
+
+            <h2>Mineur</h2>
+            <ul>
+                <li v-for="(notes, note) in getMinorHarmony(selected)">
+                    {{getKey(note)}} :
+                    <span v-for="n in notes">{{getKey(n)}} </span>
+                </li>
+            </ul>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+        <script>
+            window.onload = () => {
+                new Vue({
+                    el: "#app",
+                    data: {
+                        keyboard: [
+                            "DO",
+                            "DO#",
+                            "RE",
+                            "RE#",
+                            "MI",
+                            "FA",
+                            "FA#",
+                            "SOL",
+                            "SOL#",
+                            "LA",
+                            "LA#",
+                            "SI",
+                        ],
+                        majorHarmony: {
+                            0: [0, 5, 9],
+                            2: [2, 7],
+                            4: [0, 5],
+                            5: [2, 5],
+                            7: [0, 7, 4],
+                            9: [5, 9],
+                            11: [7],
+                        },
+                        minorHarmony: {
+                            0: [0, 5, 9],
+                            2: [2, 7],
+                            3: [0, 5],
+                            5: [2, 5],
+                            7: [0, 7, 4],
+                            8: [5, 9],
+                            10: [7],
+                        },
+                        selected: null,
+                    },
+
+                    methods: {
+                        getMajorHarmony(start = 0) {
+                            let harm = {}
+
+                            for (let i in this.majorHarmony) {
+                                harm[i * 1 + start] = this.majorHarmony[i].map(
+                                    (a) => a * 1 + start
+                                )
+                            }
+
+                            return harm
+                        },
+                        getMinorHarmony(start = 0) {
+                            let harm = {}
+
+                            for (let i in this.minorHarmony) {
+                                harm[i * 1 + start] = this.minorHarmony[i].map(
+                                    (a) => a * 1 + start
+                                )
+                            }
+
+                            return harm
+                        },
+                        getKey(index) {
+                            return this.keyboard[index % this.keyboard.length]
+                        },
+                    },
+                })
+            }
+        </script>
+    </body>
+</html>
